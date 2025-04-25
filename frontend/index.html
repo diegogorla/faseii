@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AphasiAPP - Login</title>
+  <style>
+    body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+    .login-container { border: 1px solid #ccc; padding: 2rem; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input { display: block; width: 100%; margin-bottom: 1rem; padding: 0.5rem; }
+    button { padding: 0.5rem 1rem; }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Entrar no AphasiAPP</h2>
+    <form id="loginForm">
+      <label for="username">Nome de usuário</label>
+      <input type="text" id="username" name="username" required />
+
+      <label for="password">Senha (opcional)</label>
+      <input type="password" id="password" name="password" />
+
+      <button type="submit">Entrar</button>
+    </form>
+    <p id="message"></p>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const msg = document.getElementById('message');
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const user = form.username.value;
+      const pass = form.password.value;
+      try {
+        const res = await fetch('https://avatars.githubusercontent.com/u/174305206?v=4', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: user, password: pass })
+        });
+        const data = await res.json();
+        if (res.ok) msg.textContent = 'Login bem-sucedido!';
+        else msg.textContent = data.detail || 'Erro no login';
+      } catch (err) {
+        msg.textContent = 'Falha de rede';
+      }
+    });
+  </script>
+</body>
+</html>
